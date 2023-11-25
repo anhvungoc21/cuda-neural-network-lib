@@ -1,7 +1,6 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
 
 // Performs a matrix multiplication on the CPU
 bool cpu__matrix_multiply(float *A, float *B, float *result, int rows_A,

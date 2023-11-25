@@ -1,3 +1,4 @@
+#include "gpu_math.cu"
 
 #define BLOCK_SIZE 32
 

@@ -3,7 +3,7 @@ CFLAGS := -g
 
 all: main
 
-main: main.cu math/cpu_math.c math/cpu_math.h math/gpu_math.cu math/gpu_math.cuh
+main: main.cu math/cpu_math.c math/cpu_math.h math/gpu_math.cu math/gpu_math.cuh utils.c utils.h
 	$(CC) $(CFLAGS) -o main main.cu
 
 format:

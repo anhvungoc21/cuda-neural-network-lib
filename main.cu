@@ -20,8 +20,8 @@ int main() {
   float *cpu_result = (float *) malloc(sizeof(float) * (rows_A * cols_B));
   float *gpu_result = (float *) malloc(sizeof(float) * (rows_A * cols_B));
 
-  __fill_random(A, rows_A * cols_A);
-  __fill_random(B, rows_B * cols_B);
+  fill_random(A, rows_A * cols_A);
+  fill_random(B, rows_B * cols_B);
 
   // CPU
   clock_t start_cpu = clock();
