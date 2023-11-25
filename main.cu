@@ -40,7 +40,7 @@ int main() {
 
   // Check for result equality
   float tolerance = 1e-6;
-  check_equal_arr(cpu_result, gpu_result, size_result, tolerance);
+  check_equal_arr(cpu_result, gpu_result, rows_A * cols_B, tolerance);
 
   free(A);
   free(B);
