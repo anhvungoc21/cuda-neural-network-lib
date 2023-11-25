@@ -1,10 +1,13 @@
+// TODO:
+// - gpu_math.cu: Ideal number of threads per block? Limits?
+
 // SIMT: Simple Instruction, Multiple Threads
 
 // Architecture
-// Threads 
+// Threads
 //  - Lowest granualarity
 //  - Execute instructions
-// Warps 
+// Warps
 //  - Lowest SCHEDULABLE granularity
 //  - Executes same instructions together (lock-step)
 // Thread blocks
@@ -13,7 +16,6 @@
 // Grids
 //  - How a problem is mapped to the GPU
 //  - Part of GPU LAUNCH PARAMETERS (#Blocks, #Threads
-
 
 // Matrix Multiplication
 // -> Think in terms of the resulting matrix!
@@ -25,17 +27,18 @@
 // -> Shared Memory (Scratchpad)
 //    - User-managed L1 Cache
 //    - Private per block
-// => Basically we copy each "tile" of the matrix to its corresponding block's shared memory
+// => Basically we copy each "tile" of the matrix to its corresponding block's
+// shared memory
 // => This way we always access cache instead of memory
 
 // Coalescing
-// - In terms of memory addresses, matrices are in row-major order cuz it's 1D of rows
+// - In terms of memory addresses, matrices are in row-major order cuz it's 1D
+// of rows
 // => Matrix A: Each thread accesses a different ROW => misaligned
 // => Matrix B: Each thread accesses a different COLUMN => aligned (adjacent)
-//              Multiple adjacent accesses can be coalesced into a single wide access
+//              Multiple adjacent accesses can be coalesced into a single wide
+//              access
 // ==> Solution: Transpose the A Matrix!!.
 // This doesn't help crazily though
-
-
 
 // L1, L2 caches?
