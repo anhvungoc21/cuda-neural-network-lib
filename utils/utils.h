@@ -9,3 +9,6 @@ void print_matrix(float *mat, int rows, int cols);
 
 // Prints an array
 void print_arr(float *arr, int size);
+
+// Checks 2 arrays for equality
+void check_equal_arr(float * arr1, float* arr2, int size);

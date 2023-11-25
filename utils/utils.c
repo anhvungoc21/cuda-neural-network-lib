@@ -31,3 +31,17 @@ void print_arr(float *arr, int size) {
   }
   printf("\n\n");
 }
+
+/**
+ * Checks 2 arrays for equality
+ */
+void check_equal_arr(float * arr1, float* arr2, int size) {
+  for (int i = 0; i < size; i++) {
+    if (arr1[i] != arr2[i]) {
+      printf("Unequal: %f vs. %f", arr1[i], arr2[i]);
+      return;
+    }
+  }
+
+  printf("Equal!");
+}

@@ -38,6 +38,9 @@ int main() {
   clock_t end_gpu = clock();
   printf("GPU: %.2f\n", (double)(end_gpu - start_gpu) / CLOCKS_PER_SEC);
 
+  // Check for result equality
+  check_equal_arr(cpu_result, gpu_result, size_result);
+
   free(A);
   free(B);
   free(cpu_result);

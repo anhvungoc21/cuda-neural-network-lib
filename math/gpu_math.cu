@@ -1,5 +1,7 @@
 #include "gpu_math.cuh"
 
+#include "../utils/errors.cuh"
+
 #define BLOCK_SIZE 32
 
 /**
@@ -55,13 +57,14 @@ bool gpu__matrix_multiply(float *A, float *B, float *result, int rows_A,
   size_t size_B = sizeof(float) * (rows_B * cols_B);
   size_t size_result = sizeof(float) * (rows_A * cols_B);
 
-  cudaMalloc(&gpu_A, size_A);
-  cudaMalloc(&gpu_B, size_B);
-  cudaMalloc(&gpu_result, size_result);
+  gpuErrchk(cudaMalloc(&gpu_A, size_A));
+  gpuErrchk(cudaMalloc(&gpu_B, size_B));
+  gpuErrchk(cudaMalloc(&gpu_result, size_result));
 
-  cudaMemcpy(gpu_A, A, size_A, cudaMemcpyHostToDevice);
-  cudaMemcpy(gpu_B, B, size_B, cudaMemcpyHostToDevice);
-  cudaMemcpy(gpu_result, result, size_result, cudaMemcpyHostToDevice);
+  gpuErrchk(cudaMemcpy(gpu_A, A, size_A, cudaMemcpyHostToDevice));
+  gpuErrchk(cudaMemcpy(gpu_B, B, size_B, cudaMemcpyHostToDevice));
+  gpuErrchk(
+      cudaMemcpy(gpu_result, result, size_result, cudaMemcpyHostToDevice));
 
   // Each block has a fixed 32 x 32 threads
   dim3 blockSize(BLOCK_SIZE, BLOCK_SIZE);
@@ -77,7 +80,10 @@ bool gpu__matrix_multiply(float *A, float *B, float *result, int rows_A,
                                                     rows_A, cols_A, cols_B);
 
   // Copy result back to CPU
-  cudaMemcpy(result, gpu_result, size_result, cudaMemcpyDeviceToHost);
+  gpuErrchk(cudaPeekAtLastError());
+  gpuErrchk(cudaDeviceSynchronize());
+  gpuErrchk(
+      cudaMemcpy(result, gpu_result, size_result, cudaMemcpyDeviceToHost));
 
   // Clean up
   cudaFree(gpu_A);
