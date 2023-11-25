@@ -54,10 +54,10 @@ int almostEquals(float a, float b, float epsilon) {
 void check_equal_arr(float *arr1, float *arr2, int size, float epsilon) {
   for (int i = 0; i < size; i++) {
     if (!almostEquals(arr1[i], arr2[i], epsilon)) {
-      printf("Unequal: %g vs. %g", arr1[i], arr2[i]);
+      printf("Unequal: %.6f vs. %.6f\n", arr1[i], arr2[i]);
       return;
     }
   }
 
-  printf("Equal!");
+  printf("Equal!\n");
 }
