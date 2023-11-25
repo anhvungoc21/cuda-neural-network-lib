@@ -1,10 +1,10 @@
-#include "gpu_math.cu"
+#include "gpu_math.cuh"
 
 #define BLOCK_SIZE 32
 
 /**
- * ThKernel for matrix multiplication
- * 
+ * Kernel for matrix multiplication
+ *
  * @param A First matrix (m x p)
  * @param B Second matrix (p x n)
  * @param result Result matrix (m x n)
@@ -26,9 +26,10 @@ __global__ void __kernel_matrix_multiply(float *A, float *B, float *result,
   // Calculate cell
   float sum = 0.0f;
   for (int k = 0; k < inner_dim; k++) {
-    sum += A[row * inner_dim + k] + B[k * cols_B + col];
+    sum += A[row * inner_dim + k] * B[k * cols_B + col];
   }
-  C[row * cols_B + col] = sum;
+
+  result[row * cols_B + col] = sum;
 }
 
 /**
@@ -44,7 +45,7 @@ bool gpu__matrix_multiply(float *A, float *B, float *result, int rows_A,
   // Guard against invalid matrix inputs
   if (cols_A != rows_B) {
     printf("Unabled to multiply %dx%d matrix by %dx%d matrix", rows_A, cols_A,
-    rows_B, cols_B);
+           rows_B, cols_B);
     return false;
   }
 
@@ -68,12 +69,12 @@ bool gpu__matrix_multiply(float *A, float *B, float *result, int rows_A,
   // Each grid has a X and Y corresponding to the shape of result matrix
   // The plus one extra unit and - 1 is to ensure rounding up
   size_t gridCols = (cols_B + blockSize.x - 1) / blockSize.x;
-  size_t gridRows = (row_A + blockSize.y - 1) / blockSize.y;
+  size_t gridRows = (rows_A + blockSize.y - 1) / blockSize.y;
   dim3 gridSize(gridCols, gridRows);
 
   // Run kernel
-  __kernel_matrix_multiply<<<gridSize, blockSize>>>(
-      gpu_A, gpu_B, gpu_result, rows_A, cols_A, cols_B);
+  __kernel_matrix_multiply<<<gridSize, blockSize>>>(gpu_A, gpu_B, gpu_result,
+                                                    rows_A, cols_A, cols_B);
 
   // Copy result back to CPU
   cudaMemcpy(result, gpu_result, size_result, cudaMemcpyDeviceToHost);
