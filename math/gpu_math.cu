@@ -1,8 +1,6 @@
-#include "gpu_math.cuh"
-
 #include "../utils/errors.cuh"
 
-#define BLOCK_SIZE 32
+#include "gpu_math.cuh"
 
 /**
  * Kernel for matrix multiplication
@@ -10,16 +8,13 @@
  * @param A First matrix (m x p)
  * @param B Second matrix (p x n)
  * @param result Result matrix (m x n)
- * @param rows_A m
- * @param inner_dim p
- * @param cols_B n
  */
 __global__ void __kernel_matrix_multiply(float *A, float *B, float *result,
-                                         int rows_A, int inner_dim,
-                                         int cols_B) {
+                                         size_t rows_A, size_t inner_dim,
+                                         size_t cols_B) {
   // Get row and column of thread in result matrix
-  int row = blockIdx.y * blockDim.y + threadIdx.y;
-  int col = blockIdx.x * blockDim.x + threadIdx.x;
+  size_t row = blockIdx.y * blockDim.y + threadIdx.y;
+  size_t col = blockIdx.x * blockDim.x + threadIdx.x;
 
   // Check boundaries
   if (row >= rows_A || col >= cols_B)
@@ -31,6 +26,7 @@ __global__ void __kernel_matrix_multiply(float *A, float *B, float *result,
     sum += A[row * inner_dim + k] * B[k * cols_B + col];
   }
 
+  // Store result
   result[row * cols_B + col] = sum;
 }
 
@@ -40,21 +36,13 @@ __global__ void __kernel_matrix_multiply(float *A, float *B, float *result,
  * @param A First matrix (m x p)
  * @param B Second matrix (p x n)
  * @param result Result matrix (m x n)
- * @return int Success (1) or Failure (0)
  */
-bool gpu__matrix_multiply(float *A, float *B, float *result, int rows_A,
-                          int cols_A, int rows_B, int cols_B) {
-  // Guard against invalid matrix inputs
-  if (cols_A != rows_B) {
-    printf("Unabled to multiply %dx%d matrix by %dx%d matrix", rows_A, cols_A,
-           rows_B, cols_B);
-    return false;
-  }
-
+void gpu__matrix_multiply(float *A, float *B, float *result, size_t rows_A,
+                          size_t inner_dim, size_t cols_B) {
   // Set up on GPU
   float *gpu_A, *gpu_B, *gpu_result;
-  size_t size_A = sizeof(float) * (rows_A * cols_A);
-  size_t size_B = sizeof(float) * (rows_B * cols_B);
+  size_t size_A = sizeof(float) * (rows_A * inner_dim);
+  size_t size_B = sizeof(float) * (inner_dim * cols_B);
   size_t size_result = sizeof(float) * (rows_A * cols_B);
 
   gpuErrchk(cudaMalloc(&gpu_A, size_A));
@@ -77,7 +65,7 @@ bool gpu__matrix_multiply(float *A, float *B, float *result, int rows_A,
 
   // Run kernel
   __kernel_matrix_multiply<<<gridSize, blockSize>>>(gpu_A, gpu_B, gpu_result,
-                                                    rows_A, cols_A, cols_B);
+                                                    rows_A, inner_dim, cols_B);
 
   // Copy result back to CPU
   gpuErrchk(cudaPeekAtLastError());
@@ -89,6 +77,4 @@ bool gpu__matrix_multiply(float *A, float *B, float *result, int rows_A,
   cudaFree(gpu_A);
   cudaFree(gpu_B);
   cudaFree(gpu_result);
-
-  return true;
 }

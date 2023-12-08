@@ -1,6 +1,6 @@
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <math.h>
 
 // Fills an array with random whole-number floats from 1 to 10
 void fill_random_ints(float *arr, int size);

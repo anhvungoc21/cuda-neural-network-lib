@@ -1,6 +1,3 @@
-// TODO:
-// - gpu_math.cu: Ideal number of threads per block? Limits?
-
 // SIMT: Simple Instruction, Multiple Threads
 
 // Architecture
@@ -42,3 +39,11 @@
 // This doesn't help crazily though
 
 // L1, L2 caches?
+
+
+// Single vs Double precision?
+// https://www.geeksforgeeks.org/difference-between-single-precision-and-double-precision/
+
+
+// INSANE GUIDE:
+// https://siboehm.com/articles/22/CUDA-MMM
