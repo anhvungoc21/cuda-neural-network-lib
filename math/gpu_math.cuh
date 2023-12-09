@@ -1,5 +1,6 @@
+#pragma once
+
 #include <stdlib.h>
-#include <time.h>
 
 // Size of a thread block
 // Fixed to 32 so that each block has 32 x 32 = 1024 threads

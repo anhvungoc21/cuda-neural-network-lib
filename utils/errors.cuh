@@ -1,3 +1,5 @@
+#pragma once
+
 #include <stdio.h>
 
 // Macro for error checking on CUDA API calls

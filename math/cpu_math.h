@@ -1,5 +1,5 @@
-#include <stdbool.h>
-#include <stdio.h>
+#pragma once
+
 #include <stdlib.h>
 
 // Performs a matrix multiplication on the CPU
