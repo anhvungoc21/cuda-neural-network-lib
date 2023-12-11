@@ -2,11 +2,11 @@
 #include <stdlib.h>
 #include <time.h>
 
-#include "math/gpu_math.cuh"
+#include "../math/gpu_math.cuh"
 
 extern "C" {
-#include "math/cpu_math.h"
-#include "utils/utils.h"
+#include "../math/cpu_math.h"
+#include "../utils/utils.h"
 }
 
 // === Findings ===
@@ -33,13 +33,13 @@ int main() {
 
   // CPU
   clock_t start_cpu = clock();
-  cpu__matrix_multiply(A, B, cpu_result, rows_A, cols_A, rows_B, cols_B);
+  cpu__matrix_multiply(A, B, cpu_result, rows_A, rows_B, cols_B);
   clock_t end_cpu = clock();
   printf("CPU: %.3f\n", (double)(end_cpu - start_cpu) / CLOCKS_PER_SEC);
 
   // GPU
   clock_t start_gpu = clock();
-  gpu__matrix_multiply(A, B, gpu_result, rows_A, cols_A, rows_B, cols_B);
+  gpu__matrix_multiply(A, B, gpu_result, rows_A, rows_B, cols_B);
   clock_t end_gpu = clock();
   printf("GPU: %.3f\n", (double)(end_gpu - start_gpu) / CLOCKS_PER_SEC);
 

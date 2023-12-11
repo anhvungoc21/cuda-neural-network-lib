@@ -2,11 +2,11 @@
 #include <stdlib.h>
 #include <time.h>
 
-#include "math/gpu_math.cuh"
+#include "math/math.cuh"
 
 extern "C" {
-#include "math/cpu_math.h"
 #include "utils/utils.h"
+#include "network/network.h"
 }
 
 

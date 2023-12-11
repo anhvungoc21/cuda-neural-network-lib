@@ -1,14 +1,26 @@
+# Compiler & flags
 CC := nvcc
 CFLAGS := -g
 
+# File patterns to compile
+C_FILES := $(wildcard **/*.c)
+H_FILES := $(wildcard **/*.h)
+CU_FILES := $(wildcard **/*.cu)
+CUH_FILES := $(wildcard **/*.cuh)
+
+# Exclude archived experiments
+CU_FILES := $(filter-out $(wildcard experiments/*), $(CU_FILES))
+
+# Target executable
+TARGET := main
+
 all: main
 
-main: main.cu math/cpu_math.c math/cpu_math.h math/gpu_math.cu math/gpu_math.cuh utils/utils.c utils/utils.h utils/errors.cu utils/errors.cuh
-	$(CC) $(CFLAGS) -o main main.cu math/gpu_math.cu utils/errors.cu math/cpu_math.c utils/utils.c
+main: main.cu $(C_FILES) $(H_FILES) $(CU_FILES) $(CUH_FILES)
+	$(CC) $(CFLAGS) $(C_FILES) $(CU_FILES) -o $(TARGET) main.cu
 
 format:
-	@clang-format -i --style=file $(wildcard */*.c) $(wildcard */*.h) \
-								  $(wildcard */*.cu) $(wildcard */*.cuh)
+	@clang-format -i --style=file $(C_FILES) $(H_FILES) $(CU_FILES) $(CUH_FILES)
 
 clean:
 	rm -f main

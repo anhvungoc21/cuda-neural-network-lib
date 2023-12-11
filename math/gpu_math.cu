@@ -1,6 +1,6 @@
-#include "../utils/errors.cuh"
-
 #include "gpu_math.cuh"
+
+#include "../utils/errors.cuh"
 
 /**
  * Kernel for matrix multiplication
