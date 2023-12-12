@@ -73,7 +73,7 @@ bool validate_network_arch(network_t *network);
 void feed_input_data(network_t *network, float *data);
 
 // Perform forward propagation through the network
-void forward_propagate(network_t *network);
+void forward_propagate(network_t *network, bool force_use_cpu);
 
 // Print network info layer by layer
 // If verbose, print weights and biases

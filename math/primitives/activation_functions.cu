@@ -30,4 +30,4 @@ void activation_func_to_string(activation_func_t acti_func) {
   } else if (acti_func == SIGMOID) {
     printf("Sigmoid\n");
   }
-}
+} 

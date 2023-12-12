@@ -100,6 +100,7 @@ void create_append_layer(network_t *network, size_t num_neurons,
   network->num_cur_layers++;
 }
 
+// https://machinelearningmastery.com/weight-initialization-for-deep-learning-neural-networks/
 void __initialize_weights_biases(layer_t *layer) {
   srand((unsigned int)time(NULL));
 
@@ -127,7 +128,7 @@ void feed_input_data(network_t *network, float *data) {
 /**
  * Perform forward propagation through the network
  */
-void forward_propagate(network_t *network) {
+void forward_propagate(network_t *network, bool force_use_cpu) {
   for (int i = 1; i < network->num_layers; i++) {
     layer_t *prev_layer = network->layers[i - 1];
     layer_t *cur_layer = network->layers[i];
@@ -136,17 +137,24 @@ void forward_propagate(network_t *network) {
     // Layer always has dim 1 x num_neurons, hence 1
     matrix_multiply(prev_layer->outputs, cur_layer->weights, cur_layer->outputs,
                     1, prev_layer->num_neurons, cur_layer->prev_layer_dim,
-                    cur_layer->num_neurons, false);
-
-    // Apply activation function
-    activate_arr(cur_layer->outputs, cur_layer->num_neurons,
-                 cur_layer->activation_func);
+                    cur_layer->num_neurons, force_use_cpu);
 
     // Add biases
     for (int i = 0; i < cur_layer->num_neurons; i++) {
       cur_layer->outputs[i] += cur_layer->biases[i];
     }
+
+    // Apply activation function
+    activate_arr(cur_layer->outputs, cur_layer->num_neurons,
+      cur_layer->activation_func);
   }
+}
+
+/**
+ * Perform back propagation through the network
+ */
+void back_propagate(network_t *network, bool force_use_cpu) {
+
 }
 
 /**

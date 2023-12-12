@@ -25,7 +25,8 @@ void matrix_multiply(float *A, float *B, float *result, size_t rows_A,
 
   // Select GPU or CPU
   size_t num_threads = rows_A * cols_B;
-  if (force_use_cpu || num_threads < THRESHOLD_USE_GPU) {
+  size_t num_ops_per_thread = cols_A * rows_B;
+  if (force_use_cpu || ((num_threads < THRESHOLD_NUM_THREADS_USE_GPU) && (num_ops_per_thread < THRESHOLD_NUM_OPS_USE_GPU))) {
     cpu__matrix_multiply(A, B, result, rows_A, cols_A, cols_B);
   } else {
     gpu__matrix_multiply(A, B, result, rows_A, cols_A, cols_B);
