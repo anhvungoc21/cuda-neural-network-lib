@@ -21,6 +21,24 @@ float sigmoid(float x) {
  */
 float reLU(float x) { return fmaxf(0.0f, x); }
 
+/**
+ * Softmax activation function
+ */
+void softMax(float *arr, size_t size) {
+  float sum_exp = 0.0f;
+  
+  // Calculate and sum exponents
+  for (int i = 0; i < size; i++) {
+    arr[i] = exp(arr[i]);
+    sum_exp += arr[i];
+  }
+
+  // Divide exponents by sum
+  for (int i = 0; i < size; i++) {
+    arr[i] /= sum_exp;
+  }
+}
+
 /** 
  * Derivative of Sigmoid activation function
  */
