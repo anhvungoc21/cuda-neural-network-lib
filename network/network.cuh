@@ -75,6 +75,10 @@ void feed_input_data(network_t *network, float *data);
 // Perform forward propagation through the network
 void forward_propagate(network_t *network, bool force_use_cpu);
 
+
+// Saves the architecture, weights, and biases of a neural network to a binary file
+void save_network(network_t *network, const char *fname);
+
 // Print network info layer by layer
 // If verbose, print weights and biases
 void print_network(network_t *network, bool verbose);

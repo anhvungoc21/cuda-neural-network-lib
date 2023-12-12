@@ -35,8 +35,30 @@ void matrix_multiply(float *A, float *B, float *result, size_t rows_A,
 
 /**
  * Applies a specific activation function on an array
- * TODO: Implement GPU version
+ * TODO later on: Implement GPU version
  */
 void activate_arr(float *arr, size_t size, activation_func_t acti_func) {
   cpu__activate_arr(arr, size, acti_func);
+}
+
+
+/**
+ * Calculates the total loss function from an array
+ */ 
+float calculate_loss(float *predicted, float *actual, size_t size, loss_func_t loss_func) {
+  return cpu__calculate_loss(predicted, actual, size, loss_func);
+}
+
+/**
+ * Calculates the derivative of a loss function on the CPU
+ */ 
+float derivative_loss_func(float predicted, float actual, loss_func_t loss_func) {
+  return cpu__derivative_loss_func(predicted, actual, loss_func);   
+}
+
+/**
+ * Calculates the derivative of an activation function on the CPU
+ */ 
+float derivative_acti_func(float output, activation_func_t acti_func) {
+  return cpu__derivative_acti_func(output, acti_func);   
 }

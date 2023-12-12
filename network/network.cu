@@ -134,7 +134,7 @@ void forward_propagate(network_t *network, bool force_use_cpu) {
     layer_t *cur_layer = network->layers[i];
 
     // Perform matrix multiplication of neuron data
-    // Layer always has dim 1 x num_neurons, hence 1
+    // Accept this for now: Layer always has dim 1 x num_neurons, hence 1
     matrix_multiply(prev_layer->outputs, cur_layer->weights, cur_layer->outputs,
                     1, prev_layer->num_neurons, cur_layer->prev_layer_dim,
                     cur_layer->num_neurons, force_use_cpu);
@@ -153,9 +153,68 @@ void forward_propagate(network_t *network, bool force_use_cpu) {
 /**
  * Perform back propagation through the network
  */
-void back_propagate(network_t *network, bool force_use_cpu) {
+void back_propagate(network_t *network, float *ground_truth, bool force_use_cpu) {
+  for (int i = network->num_layers - 1; i > 0; i--) {
+    layer_t *cur_layer = network->layers[i];
+    layer_t *next_layer = network->layers[i + 1];
 
+    // At output layer: Calculate initial gradient of loss
+    if (i == network->num_layers - 1) {
+      // Gradient = Derivative of loss function * Derivative of activation function
+      for (int i = 0; i < cur_layer->num_neurons; i++) {
+        float d_loss_func = derivative_loss_func(ground_truth[i], cur_layer->outputs[i], network->loss_func);
+        float d_acti_func = derivative_acti_func(cur_layer->outputs[i], cur_layer->activation_func);
+
+        // Store gradient in outputs since we don't use this again
+        cur_layer->outputs[i] = d_loss_func * d_acti_func;
+      }
+    }
+
+    // TODO: Propagate gradient
+
+  }  
 }
+
+/**
+ * Saves the architecture, weights, and biases 
+ * of a neural network to a binary file
+ */
+void save_network(network_t *network, const char *fname) {
+  FILE *file = fopen(fname, "wb");
+  if (file == NULL) {
+    perror("Error opening file for writing");
+    return;
+  }
+
+  // Write network architecture data
+  fwrite(&network->num_layers, sizeof(size_t), 1, file);
+  fwrite(&network->num_inputs, sizeof(size_t), 1, file);
+  fwrite(&network->num_outputs, sizeof(size_t), 1, file);
+  fwrite(&network->num_epochs, sizeof(size_t), 1, file);
+  fwrite(&network->learning_rate, sizeof(float), 1, file);
+  fwrite(&network->loss_func, sizeof(int), 1, file);
+}
+
+/**
+ * Loads the architecture, weights, and biases 
+ * of a neural network from a binary file
+ */
+ void load_network(network_t *network, const char *fname) {
+  FILE *file = fopen(fname, "r");
+  if (file == NULL) {
+    perror("Error opening file for writing");
+    return;
+  }
+
+  // Write network architecture data
+  fwrite(&network->num_layers, sizeof(size_t), 1, file);
+  fwrite(&network->num_inputs, sizeof(size_t), 1, file);
+  fwrite(&network->num_outputs, sizeof(size_t), 1, file);
+  fwrite(&network->num_epochs, sizeof(size_t), 1, file);
+  fwrite(&network->learning_rate, sizeof(float), 1, file);
+  fwrite(&network->loss_func, sizeof(int), 1, file);
+}
+
 
 /**
  * Print network info layer by layer
