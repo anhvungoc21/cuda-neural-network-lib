@@ -156,7 +156,7 @@ void forward_propagate(network_t *network, bool force_use_cpu) {
 void back_propagate(network_t *network, float *ground_truth, bool force_use_cpu) {
   for (int i = network->num_layers - 1; i > 0; i--) {
     layer_t *cur_layer = network->layers[i];
-    layer_t *next_layer = network->layers[i + 1];
+    // layer_t *next_layer = network->layers[i + 1];
 
     // At output layer: Calculate initial gradient of loss
     if (i == network->num_layers - 1) {

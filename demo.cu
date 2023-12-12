@@ -14,7 +14,7 @@ int main() {
   // Initialize network
   network_t *network = (network_t *) malloc(sizeof(network_t));
   size_t num_layers = 4;
-  size_t num_inputs = 1024; // 100000;
+  size_t num_inputs = 2048; // 100000;
   size_t num_outputs = 2;
   size_t num_epochs = 10;
   float lrate = 0.0004f;
