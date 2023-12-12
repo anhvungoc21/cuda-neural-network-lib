@@ -14,7 +14,7 @@ int main() {
   // Initialize network
   network_t *network = (network_t *) malloc(sizeof(network_t));
   size_t num_layers = 4;
-  size_t num_inputs = 1024; // 16 // 100000;
+  size_t num_inputs = 100000; // 1024 // 16 // 100000;
   size_t num_outputs = 2;
   size_t num_epochs = 10;
   float lrate = 0.0004f;
@@ -23,8 +23,8 @@ int main() {
 
   // Create layers
   create_append_layer(network, num_inputs, RELU);
-  create_append_layer(network, 512, RELU); // 32 // 2048
-  create_append_layer(network, 128, RELU); // 8 // 10240
+  create_append_layer(network, 2048, RELU); // 512 // 32 // 2048
+  create_append_layer(network, 10240, RELU); // 128 // 8 // 10240
   create_append_layer(network, num_outputs, SIGMOID);
 
   // Validate architecture
