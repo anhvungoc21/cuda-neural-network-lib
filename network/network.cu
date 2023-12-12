@@ -9,6 +9,7 @@
 #include <math.h>
 #include <stdio.h>
 #include <time.h>
+#include <string.h>
 
 // Hoist
 void __initialize_weights_biases(layer_t *layer);

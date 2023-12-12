@@ -14,7 +14,7 @@ int main() {
   // Initialize network
   network_t *network = (network_t *) malloc(sizeof(network_t));
   size_t num_layers = 4;
-  size_t num_inputs = 2048; // 100000;
+  size_t num_inputs = 8; // 8 // 1024 // 100000;
   size_t num_outputs = 2;
   size_t num_epochs = 10;
   float lrate = 0.0004f;
@@ -23,10 +23,17 @@ int main() {
 
   // Create layers
   create_append_layer(network, num_inputs, RELU);
-  create_append_layer(network, 512, RELU); // 2048
-  create_append_layer(network, 128, RELU); // 10240
+  create_append_layer(network, 16, RELU); // 16 // 512 // 2048
+  create_append_layer(network, 4, RELU); // 4 // 128 // 10240
   create_append_layer(network, num_outputs, SIGMOID);
-  validate_network_arch(network);
+
+  // Validate architecture
+  if (!validate_network_arch(network)) {
+    exit(1);
+  }
+
+  // Print network
+  // print_network(network, false);
 
   // Feed network data
   float *data = (float *) malloc(sizeof(float) * num_inputs);
@@ -47,5 +54,5 @@ int main() {
   printf("GPU: %.3f\n", (double)(end_gpu - start_gpu) / CLOCKS_PER_SEC);
 
   // Print network
-  // print_network(network, true);
+  print_network(network, true);
 }
