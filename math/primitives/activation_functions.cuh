@@ -9,5 +9,11 @@ float sigmoid(float x);
 // Rectified Linear Unit activation function
 float reLU(float x);
 
+// Derivative of Sigmoid activation function
+float sigmoid_derivative(float output);
+
+// Derivative of ReLU activation function
+float reLU_derivative(float output);
+
 // Convert activation_func_t enum to string representation
 void activation_func_to_string(activation_func_t acti_func);

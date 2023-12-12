@@ -12,4 +12,4 @@ float cross_entropy_loss();
 float mean_squared_error_loss();
 
 // Convert loss_function_t enum to string representation
-void loss_func_to_string(loss_func_t acti_func);
+void loss_func_to_string(loss_func_t loss_func);

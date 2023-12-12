@@ -21,6 +21,20 @@ float sigmoid(float x) {
  */
 float reLU(float x) { return fmaxf(0.0f, x); }
 
+/** 
+ * Derivative of Sigmoid activation function
+ */
+float sigmoid_derivative(float output) {
+  return output * (1.0f - output);
+}
+
+/** Derivative of ReLU activation function
+ *
+ */
+float reLU_derivative(float output) {
+  return (output > 0.0f) ? 1.0f : 0.0f;
+}
+
 /**
  * Translate activation_func_t enum to string representation
  */
