@@ -1,4 +1,4 @@
-#include "utils.h"
+#include "utils.cuh"
 
 /**
  * Fills an array with random whole-number floats from 1 to 10
@@ -24,7 +24,7 @@ void fill_random_floats(float *arr, int size) {
 void print_matrix(float *mat, int rows, int cols) {
   for (int r = 0; r < rows; r++) {
     for (int c = 0; c < cols; c++) {
-      printf("%.1f ", mat[r * cols + c]);
+      printf("%.3f ", mat[r * cols + c]);
     }
     printf("\n");
   }

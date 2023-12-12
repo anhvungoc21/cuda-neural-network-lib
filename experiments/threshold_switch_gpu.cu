@@ -3,11 +3,8 @@
 #include <time.h>
 
 #include "../math/gpu_math.cuh"
-
-extern "C" {
-#include "../math/cpu_math.h"
-#include "../utils/utils.h"
-}
+#include "../math/cpu_math.cuh"
+#include "../utils/utils.cuh"
 
 // === Findings ===
 // Using Grinnell MathLAN machines, the GPU starts to perform similarly to the

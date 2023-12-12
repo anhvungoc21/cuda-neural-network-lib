@@ -1,10 +1,9 @@
 #include "math.cuh"
 
+#include "cpu_math.cuh"
 #include "gpu_math.cuh"
 
-extern "C" {
-#include "cpu_math.h"
-}
+#include "./primitives/activation_functions.cuh"
 
 /**
  * Performs a matrix multiplication.
@@ -31,4 +30,12 @@ void matrix_multiply(float *A, float *B, float *result, size_t rows_A,
   } else {
     gpu__matrix_multiply(A, B, result, rows_A, cols_A, cols_B);
   }
+}
+
+/**
+ * Applies a specific activation function on an array
+ * TODO: Implement GPU version
+ */
+void activate_arr(float *arr, size_t size, activation_func_t acti_func) {
+  cpu__activate_arr(arr, size, acti_func);
 }

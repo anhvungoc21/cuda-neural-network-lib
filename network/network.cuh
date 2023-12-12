@@ -1,10 +1,10 @@
 #pragma once
 
-#include <stdlib.h>
 #include <stdbool.h>
+#include <stdlib.h>
 
-#include "../math/primitives/activation_functions.h"
-#include "../math/primitives/loss_functions.h"
+#include "../math/primitives/activation_functions.cuh"
+#include "../math/primitives/loss_functions.cuh"
 
 /**
  * Struct for a layer in a neural network
@@ -12,9 +12,9 @@
  * \field outputs Output data stored in neurons
  * \field weights Weights of edges leading into each neuron
  * \field biases Bias terms at each neuron
- * 
+ *
  * \field activation_func Activation function for this layer
-*/
+ */
 typedef struct layer {
   // Architecture
   size_t num_neurons;
@@ -56,11 +56,25 @@ typedef struct network {
   size_t num_cur_layers;
 } network_t;
 
-// Initializes a network with specified fields 
-void initialize_network(network_t *network, size_t num_layers, size_t num_inputs, size_t num_outputs, size_t num_epochs, float lrate, loss_func_t loss_func);
+// Initializes a network with specified fields
+void initialize_network(network_t *network, size_t num_layers,
+                        size_t num_inputs, size_t num_outputs,
+                        size_t num_epochs, float lrate, loss_func_t loss_func);
 
 // Creates a layer and append it to a designated network
-void create_append_layer(network_t *network, size_t num_neurons, activation_func_t act_func);
+void create_append_layer(network_t *network, size_t num_neurons,
+                         activation_func_t act_func);
 
-// Checks whether current network architecture aligns with its user-defined specifications
+// Checks whether current network architecture aligns with its user-defined
+// specifications
 bool validate_network_arch(network_t *network);
+
+// Store input data into input layer of network
+void feed_input_data(network_t *network, float *data);
+
+// Perform forward propagation through the network
+void forward_propagate(network_t *network);
+
+// Print network info layer by layer
+// If verbose, print weights and biases
+void print_network(network_t *network, bool verbose);

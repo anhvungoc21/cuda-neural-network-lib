@@ -4,7 +4,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "primitives/activation_functions.h"
+#include "./primitives/activation_functions.cuh"
+#include "./primitives/loss_functions.cuh"
 
 #define THRESHOLD_USE_GPU 8192
 
@@ -14,4 +15,4 @@ void matrix_multiply(float *A, float *B, float *result, size_t rows_A,
                      bool force_use_cpu);
 
 // Applies an activation function to an array
-void activate(float *arr, activation_func_t act_func, bool force_use_cpu);
+void activate_arr(float *arr, size_t size, activation_func_t act_func);
