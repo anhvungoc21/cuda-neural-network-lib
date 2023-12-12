@@ -17,11 +17,15 @@ all: main
 main: main.cu $(CU_FILES) $(CUH_FILES)
 	$(CC) $(CFLAGS) $(CU_FILES) -o $(TARGET) main.cu
 
+demo: demo.cu $(CU_FILES) $(CUH_FILES)
+	$(CC) $(CFLAGS) $(CU_FILES) -o demo demo.cu
+
 format:
 	@clang-format -i --style=file $(CU_FILES) $(CUH_FILES)
 
 clean:
 	rm -f main
 	rm -rf *.dSYM
+	rm -f demo
 
 .PHONY: format clean all
