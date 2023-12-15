@@ -64,3 +64,10 @@ There are three salient cases of CPU vs. GPU runtime behavior when dealing with 
 These cases correspond with the three commented-out values on lines 17, 26 and 27. This means that to test out case one, use the first set of values for each line starting from the left, and so on. Note that the value in the initial code is the third case. As a side note, like previously stated, using smaller values should allow you to verify the network architecture more acurately.
 
 ## Limitations and Future Directions
+The attached report in the submission will focus on the missing class topic (Files and File Systems), this section will detail on my current vision of the future directions of the project.
+
+Firstly, the core functions stated previously should first be completed. The main roadblock for me has been the choice of loss functions and the corresponding derivatives. Understanding the mathematical rationale behind such equations and turning them into code proved to be extremely diffcult and a completely novel field for me. While I have partially figured them out, there wasn't enough time to incorporate them into the project and move forward from there.
+
+Secondly, there are several parts of the project that can be further parallelized. Currently, only matrix multiplication is afforded the luxury. However, adding biases and applying activation functions can also be done by the GPU. Figuring out how to do all three tasks on the GPU, while still keeping the code modularized (separated into functions) has been a challenge. However, I envision that keeping memory on the GPU from the previous operation and passing it to the later ones could be a good solution.
+
+Finally, I simply did not have enough time to implement the saving and loading features of the network because of the difficulty of other parts of the project (mainly the mathematics) and the lack of time. I will touch on my approach further in the report.
