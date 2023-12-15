@@ -51,5 +51,5 @@ int main() {
   printf("GPU: %.3f\n", (double)(end_gpu - start_gpu) / CLOCKS_PER_SEC);
 
   // Print network
-  // print_network(network, true); // false
+  print_network(network, false); // true
 }

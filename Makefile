@@ -23,6 +23,5 @@ format:
 clean:
 	rm -f main
 	rm -rf *.dSYM
-	rm -f demo
 
 .PHONY: format clean all

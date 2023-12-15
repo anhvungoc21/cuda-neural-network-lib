@@ -237,10 +237,10 @@ void print_network(network_t *network, bool verbose) {
 
       printf("Biases:\n");
       print_arr(cur_layer->biases, cur_layer->num_neurons);
-    }
 
-    printf("Neuron Outputs:\n");
-    print_arr(cur_layer->outputs, cur_layer->num_neurons);
+      printf("Neuron Outputs:\n");
+      print_arr(cur_layer->outputs, cur_layer->num_neurons);
+    }
   }
 }
 
