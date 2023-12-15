@@ -32,6 +32,10 @@ void cpu__matrix_multiply(float *A, float *B, float *result, size_t rows_A,
 
 /**
  * Applies a specified activation on an array on the CPU
+ * 
+ * \param arr Array to activate element-wise
+ * \param size Size of array
+ * \param acti_func Activation function to use
  */
 void cpu__activate_arr(float *arr, size_t size, activation_func_t acti_func) {
   for (int i = 0; i < size; i++) {
@@ -46,7 +50,14 @@ void cpu__activate_arr(float *arr, size_t size, activation_func_t acti_func) {
   }
 }
 
-// Calculates the derivative of an activation function on the CPU
+/**
+ * Calculates the derivative of an activation function on the CPU
+ * 
+ * @param output Output of activation function
+ * @param acti_func Activation function used
+ *
+ * @returns Derivative of activation function with such output
+ */
 float cpu__derivative_acti_func(float output, activation_func acti_func) {
   if (acti_func == RELU) {
     return reLU_derivative(output);
@@ -59,7 +70,13 @@ float cpu__derivative_acti_func(float output, activation_func acti_func) {
 }
 
 /**
- * Calculates a loss function for an array on the CPU 
+ * Calculates a loss function for an array on the CPU
+ * 
+ * \param predicted Predicted output value
+ * \param predicted Actual output value (ground truth)
+ * \param loss_func Loss function to use
+ *
+ * \returns Loss calculated
  */
 float cpu__calculate_loss(float *predicted, float *actual, size_t size, loss_func_t loss_func) {
   if (loss_func == CROSS_ENTROPY_LOSS) {
@@ -72,9 +89,14 @@ float cpu__calculate_loss(float *predicted, float *actual, size_t size, loss_fun
   }
 }
 
-
 /**
  * Calculates the derivative of a loss function on the CPU
+ * 
+ * \param predicted Predicted output value
+ * \param predicted Actual output value (ground truth)
+ * \param loss_func Loss function used
+ *
+ * \returns Derivative of the loss function with such predicted and actual values
  */
 float cpu__derivative_loss_func(float predicted, float actual, loss_func_t loss_func) {
   if (loss_func == CROSS_ENTROPY_LOSS) {

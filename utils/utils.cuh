@@ -16,8 +16,9 @@ void print_matrix(float *mat, int rows, int cols);
 // Prints an array
 void print_arr(float *arr, int size);
 
+// Checks whether 2 floats are almost equal
+int almostEquals(float a, float b, float epsilon);
+
 // Checks 2 arrays for equality
 void check_equal_arr(float *arr1, float *arr2, int size, float epsilon);
 
-// Checks whether 2 floats are almost equal
-int almostEquals(float a, float b, float epsilon);

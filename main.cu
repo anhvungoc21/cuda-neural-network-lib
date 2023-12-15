@@ -10,6 +10,7 @@
 
 #include "utils/utils.cuh"
 
+// Entrypoint for demo program
 int main() {
   // Initialize network
   network_t *network = (network_t *) malloc(sizeof(network_t));

@@ -14,6 +14,8 @@
  * \field biases Bias terms at each neuron
  *
  * \field activation_func Activation function for this layer
+ * 
+ * \field prev_layer_dim Number of neurons in previous layer
  */
 typedef struct layer {
   // Architecture
@@ -32,13 +34,15 @@ typedef struct layer {
 /**
  * Struct for a neural network
  * \field num_layers Number of layers in the network
- * \field layer Array of layers in the network
+ * \field layers Array of pointer to layers in the network
  * \field num_inputs Number of data points in the input layer
  * \field num_outputs Number of nodes in the output layer
  *
  * \field num_epochs Number of epochs used to train the network
  * \field learning_rate Learning rate used to update weights
  * \field loss_function Loss function used to measure prediction error
+ *
+ * \field num_cur_layers Number of layers currently in network
  */
 typedef struct network {
   // Architecture
@@ -74,10 +78,6 @@ void feed_input_data(network_t *network, float *data);
 
 // Perform forward propagation through the network
 void forward_propagate(network_t *network, bool force_use_cpu);
-
-
-// Saves the architecture, weights, and biases of a neural network to a binary file
-void save_network(network_t *network, const char *fname);
 
 // Print network info layer by layer
 // If verbose, print weights and biases

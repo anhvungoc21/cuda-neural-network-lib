@@ -1,7 +1,7 @@
 #include "errors.cuh"
 
 /**
- * Function handle errors from CUDA API calls
+ * Assert-style function to handle errors from CUDA API calls
  * Source:
  * https://stackoverflow.com/questions/14038589/what-is-the-canonical-way-to-check-for-errors-using-the-cuda-runtime-api
  */

@@ -12,7 +12,6 @@ void cpu__matrix_multiply(float *A, float *B, float *result, size_t rows_A,
 // Applies a specified activation on an array on the CPU
 void cpu__activate_arr(float *arr, size_t size, activation_func_t acti_func);
 
-
 // Calculates a loss function for an array on the CPU 
 float cpu__calculate_loss(float *predicted, float *actual, size_t size, loss_func_t loss_func);
 

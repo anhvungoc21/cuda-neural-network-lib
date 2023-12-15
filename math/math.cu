@@ -35,7 +35,12 @@ void matrix_multiply(float *A, float *B, float *result, size_t rows_A,
 
 /**
  * Applies a specific activation function on an array
+ * 
  * TODO later on: Implement GPU version
+ * 
+ * \param arr Array to be activated
+ * \param size Size of array
+ * \param acti_func Activation function to use
  */
 void activate_arr(float *arr, size_t size, activation_func_t acti_func) {
   cpu__activate_arr(arr, size, acti_func);
@@ -44,6 +49,13 @@ void activate_arr(float *arr, size_t size, activation_func_t acti_func) {
 
 /**
  * Calculates the total loss function from an array
+ * 
+ * \param predicted Array of predicted output values
+ * \param actual Array of actual output values
+ * \param size Size of either array
+ * \param loss_func Loss function to be used
+ *
+ * \returns Total loss of the array of outputs
  */ 
 float calculate_loss(float *predicted, float *actual, size_t size, loss_func_t loss_func) {
   return cpu__calculate_loss(predicted, actual, size, loss_func);
@@ -51,6 +63,12 @@ float calculate_loss(float *predicted, float *actual, size_t size, loss_func_t l
 
 /**
  * Calculates the derivative of a loss function on the CPU
+ *
+ * \param predicted The predicted output value
+ * \param actual The actual output value (ground truth)
+ * \param loss_func Loss function to use
+ * 
+ * \returns Derivative of loss function given a predicted and actual value
  */ 
 float derivative_loss_func(float predicted, float actual, loss_func_t loss_func) {
   return cpu__derivative_loss_func(predicted, actual, loss_func);   
@@ -58,6 +76,12 @@ float derivative_loss_func(float predicted, float actual, loss_func_t loss_func)
 
 /**
  * Calculates the derivative of an activation function on the CPU
+ * 
+ * \param output Output of a neuron
+ * \param acti_func Acitivation function to use
+ * 
+ * \returns Derivative of activation function used to activate 
+ * a neuron with output value `output`
  */ 
 float derivative_acti_func(float output, activation_func_t acti_func) {
   return cpu__derivative_acti_func(output, acti_func);   

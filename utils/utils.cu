@@ -43,13 +43,14 @@ void print_arr(float *arr, int size) {
 
 /**
  * Checks whether 2 floats are almost equal
+ * within a tolerance of `epsilon`
  */
 int almostEquals(float a, float b, float epsilon) {
   return fabs(a - b) < epsilon;
 }
 
 /**
- * Checks 2 arrays for equality
+ * Checks 2 arrays for almost-equality
  */
 void check_equal_arr(float *arr1, float *arr2, int size, float epsilon) {
   for (int i = 0; i < size; i++) {

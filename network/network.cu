@@ -15,7 +15,17 @@
 void __initialize_weights_biases(layer_t *layer);
 
 /**
- * Initializes a network with specified fields
+ * Initializes a network with a set of predetermined specifications/settings.
+ * These parameters are the ones that the network SHOULD have, 
+ * not that it necessarily does at any given point in time.
+ * 
+ * \param network Pointer to a network_t struct
+ * \param num_layers Number of layers
+ * \param num_inputs Size of input layer
+ * \param num_outputs Size of output layer
+ * \param num_epochs Number of epochs to train the network
+ * \param lrate Learning rate of network during training
+ * \param loss_func Loss function that network should use
  */
 void initialize_network(network_t *network, size_t num_layers,
                         size_t num_inputs, size_t num_outputs,
@@ -34,8 +44,12 @@ void initialize_network(network_t *network, size_t num_layers,
 }
 
 /**
- * Checks whether current network architecture aligns with its
- * user-defined specifications
+ * Checks whether the current network architecture aligns
+ * with its user-defined specifications
+ * 
+ * \param network Pointer to a network_t struct
+ *
+ * \returns Whether network's architecture is valid (bool)
  */
 bool validate_network_arch(network_t *network) {
   // Check correctness of number of layers
@@ -68,7 +82,12 @@ bool validate_network_arch(network_t *network) {
 }
 
 /**
- * Creates a layer and append it to a designated network
+ * Creates a layer with a specified set of parameters
+ * and append it to a designated network
+ *
+ * \param network Pointer to a network_t struct
+ * \param num_neurons Number of neurons in the layer
+ * \param act_func Activation function that the layer should use
  */
 void create_append_layer(network_t *network, size_t num_neurons,
                          activation_func_t act_func) {
@@ -78,6 +97,7 @@ void create_append_layer(network_t *network, size_t num_neurons,
   layer->activation_func = act_func;
 
   // Store info about previous layer's output dimension
+  // NOTE: For now, each neuron has 1 output, hence layer dimension = 1 x num_neurons
   if (network->num_cur_layers == 0) {
     layer->prev_layer_dim = 1;
   } else {
@@ -101,7 +121,17 @@ void create_append_layer(network_t *network, size_t num_neurons,
   network->num_cur_layers++;
 }
 
-// https://machinelearningmastery.com/weight-initialization-for-deep-learning-neural-networks/
+/**
+ * Initializes the weights and biases of a layer
+ *
+ * Note: The current method is rudimentary and can cause symmetric weights & biases.
+ * Other methods have been explored, but is difficult to implement:
+ * - ReLU: He initialization
+ * - Sigmoid: Xavier/Glorot initialization
+ * https://machinelearningmastery.com/weight-initialization-for-deep-learning-neural-networks/
+ * 
+ * @param layer Pointer to a layer_t struct
+ */
 void __initialize_weights_biases(layer_t *layer) {
   srand((unsigned int)time(NULL));
 
@@ -119,7 +149,13 @@ void __initialize_weights_biases(layer_t *layer) {
 }
 
 /**
- * Store input data into input layer of network
+ * Feeds input data into the input layer of a network
+ * 
+ * Note: This currently allows 1 data point for each neuron.
+ * Allowing each neuron to be a vector is the more common implementation.
+ * 
+ * \param network Pointer to a network_t struct
+ * \param data An array of data
  */
 void feed_input_data(network_t *network, float *data) {
   memcpy(network->layers[0]->outputs, data,
@@ -127,15 +163,21 @@ void feed_input_data(network_t *network, float *data) {
 }
 
 /**
- * Perform forward propagation through the network
+ * Performs forward propagation through the network
+ * 
+ * \param network Pointer to a network_t struct
+ * \param force_use_cpu Tell the program to must use CPU instead
+ * of trying to determine between CPU and GPU based on fixed thresholds
  */
 void forward_propagate(network_t *network, bool force_use_cpu) {
+  // Propagate through each layer
   for (int i = 1; i < network->num_layers; i++) {
     layer_t *prev_layer = network->layers[i - 1];
     layer_t *cur_layer = network->layers[i];
 
     // Perform matrix multiplication of neuron data
-    // Accept this for now: Layer always has dim 1 x num_neurons, hence 1
+    // - Matrix A: Dimensions of previous layer
+    // - Matrix B: Number of previous neurons x Number of current neurons
     matrix_multiply(prev_layer->outputs, cur_layer->weights, cur_layer->outputs,
                     1, prev_layer->num_neurons, cur_layer->prev_layer_dim,
                     cur_layer->num_neurons, force_use_cpu);
@@ -152,7 +194,15 @@ void forward_propagate(network_t *network, bool force_use_cpu) {
 }
 
 /**
- * Perform back propagation through the network
+ * Performs back propagation through the network 
+ * and updates weights and biases for learning
+ * 
+ * TODO: UNFINISHED
+ * 
+ * \param network Pointer to a network_t struct
+ * \param ground_truth Expected data to compare with predicted data for loss
+ * \param force_use_cpu Tell the program to must use CPU instead
+ *  of trying to determine between CPU and GPU based on fixed thresholds 
  */
 void back_propagate(network_t *network, float *ground_truth, bool force_use_cpu) {
   for (int i = network->num_layers - 1; i > 0; i--) {
@@ -178,7 +228,12 @@ void back_propagate(network_t *network, float *ground_truth, bool force_use_cpu)
 
 /**
  * Saves the architecture, weights, and biases 
- * of a neural network to a binary file
+ * of a neural network to a custom binary file
+ * 
+ * TODO: UNFINISHED
+ * 
+ * \param network Pointer to a network_t struct
+ * \param fname File name to save to
  */
 void save_network(network_t *network, const char *fname) {
   FILE *file = fopen(fname, "wb");
@@ -194,36 +249,19 @@ void save_network(network_t *network, const char *fname) {
   fwrite(&network->num_epochs, sizeof(size_t), 1, file);
   fwrite(&network->learning_rate, sizeof(float), 1, file);
   fwrite(&network->loss_func, sizeof(int), 1, file);
+  
+  // TODO: Implement
 }
 
 /**
- * Loads the architecture, weights, and biases 
- * of a neural network from a binary file
- */
- void load_network(network_t *network, const char *fname) {
-  FILE *file = fopen(fname, "r");
-  if (file == NULL) {
-    perror("Error opening file for writing");
-    return;
-  }
-
-  // Write network architecture data
-  fwrite(&network->num_layers, sizeof(size_t), 1, file);
-  fwrite(&network->num_inputs, sizeof(size_t), 1, file);
-  fwrite(&network->num_outputs, sizeof(size_t), 1, file);
-  fwrite(&network->num_epochs, sizeof(size_t), 1, file);
-  fwrite(&network->learning_rate, sizeof(float), 1, file);
-  fwrite(&network->loss_func, sizeof(int), 1, file);
-}
-
-
-/**
- * Print network info layer by layer
- * If verbose, print weights and biases
+ * Prints network information layer by layer
+ * 
+ * \param network Pointer to a network struct
+ * \param verbose Whether floats (weights, biases, outputs) should be printed
  */
 void print_network(network_t *network, bool verbose) {
   for (int i = 0; i < network->num_layers; i++) {
-    printf("========== LAYER %d ==========\n", i + 1);
+    printf("\n========== LAYER %d ==========\n", i + 1);
     layer_t *cur_layer = network->layers[i];
 
     printf("Number of neurons: %d\n", cur_layer->num_neurons);
@@ -243,14 +281,3 @@ void print_network(network_t *network, bool verbose) {
     }
   }
 }
-
-// Notes about Dimensions:
-// Weights of a layer:
-// - Rows: prev_layer_dim
-// - Cols: num_neurons
-
-// Possible improvements:
-// - Initialize weights using valid strategy:
-//   + ReLU: He initialization
-//   + Sigmoid: Xavier/Glorot initialization
-// - Initialize weights with GPU
